@@ -1,3 +1,4 @@
+
 import javafx.util.Duration;
 import java.util.ArrayList;
 import javafx.animation.KeyFrame;
@@ -95,19 +96,44 @@ public class FirstGameClass extends Application{
                     //check if x position needs to change based on input (arrowkeys)
                     if (input.contains("LEFT")){
                     	if (xPos-width/2 >= 0){
-                    		xPos += -6;
+                    		if (xSpeed > -10){
+                    			xSpeed  += -0.5;
+                    		}
+                    		xPos += xSpeed;
                     	}
                     	if (xPos-width/2 <= 0){
                     		xPos = width/2;
+                    		xSpeed = 0;
                     	}
                     }
                     
                     if (input.contains("RIGHT")){
                     	if (xPos-width/2 <= 800){
-                    		xPos += +6;
+                    		if (xSpeed < 10){
+                    			xSpeed  += 0.5;
+                    		}
+                    		xPos += xSpeed;
                     	}
                     	if (xPos+width/2 >= 800){
                     		xPos = 800-width/2;
+                    		xSpeed = 0;
+                    	}
+                    }
+                    
+                    // if neither horizontal arrow key pressed, slow down
+                    if (!input.contains("RIGHT") && !input.contains("LEFT")){
+                    	if (xSpeed > 0)
+                    		xSpeed  += -0.5;
+                    	if (xSpeed < 0)
+                    		xSpeed += 0.5;
+                    	xPos += xSpeed;
+                    	if (xPos+width/2 >= 800){
+                    		xPos = 800-width/2;
+                    		xSpeed = 0;
+                    	}
+                    	if (xPos-width/2 <= 0){
+                    		xPos = width/2;
+                    		xSpeed = 0;
                     	}
                     }
                     
@@ -129,7 +155,7 @@ public class FirstGameClass extends Application{
                     		width += 10;
                     	}
                     } //near misses
-
+                    
                     // Clear the canvas
                     gc.clearRect(0, 0, 800,800);
                     
